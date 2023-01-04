@@ -10,10 +10,20 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2023_01_04_103553) do
+ActiveRecord::Schema.define(version: 2023_01_04_103911) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "chat_room_messages", force: :cascade do |t|
+    t.bigint "chat_room_participant_id", null: false
+    t.bigint "chat_room_id", null: false
+    t.text "body"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["chat_room_id"], name: "index_chat_room_messages_on_chat_room_id"
+    t.index ["chat_room_participant_id"], name: "index_chat_room_messages_on_chat_room_participant_id"
+  end
 
   create_table "chat_room_participants", force: :cascade do |t|
     t.bigint "user_id", null: false
@@ -43,6 +53,8 @@ ActiveRecord::Schema.define(version: 2023_01_04_103553) do
     t.index ["session_token"], name: "index_users_on_session_token", unique: true
   end
 
+  add_foreign_key "chat_room_messages", "chat_room_participants"
+  add_foreign_key "chat_room_messages", "chat_rooms"
   add_foreign_key "chat_room_participants", "chat_rooms"
   add_foreign_key "chat_room_participants", "users"
 end
