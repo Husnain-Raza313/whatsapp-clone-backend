@@ -35,9 +35,9 @@ gem 'bootsnap', '>= 1.4.4', require: false
 
 group :development, :test do
   gem 'rubocop'
+  gem 'rubocop-minitest' # or gem 'rubocop-rspec' depending on your test suite
   gem 'rubocop-performance'
   gem 'rubocop-rails'
-  gem 'rubocop-minitest' # or gem 'rubocop-rspec' depending on your test suite
 end
 
 group :development, :test do

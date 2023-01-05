@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Api
   module V1
     class UsersController < ApplicationController
@@ -5,7 +7,7 @@ module Api
         @user = User.new(user_params)
         result = PhoneNumberVerificationService.new(user: @user).send
         if result && @user.save
-          render json: @user, status: 200
+          render json: @user, status: :ok
         else
           render json: @user.errors.full_messages, status: :unprocessable_entity
         end

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class PhoneNumberVerificationService < ApplicationService
   include ActiveModel::Validations
   attr_reader :user, :client
@@ -11,7 +13,7 @@ class PhoneNumberVerificationService < ApplicationService
   def send
     client.messages.create(
       from: twilio_phone_number.to_s,
-      to: (user[:phone_number]).to_s,
+      to: user[:phone_number].to_s,
       body: "Please Enter This code under 30 seconds: #{user.otp_code}"
     )
     true
