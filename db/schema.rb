@@ -36,25 +36,26 @@ ActiveRecord::Schema.define(version: 2023_01_04_103911) do
 
   create_table "chat_rooms", force: :cascade do |t|
     t.string "name", default: "", null: false
+    t.bigint "user_id", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.index ["user_id"], name: "index_chat_rooms_on_user_id"
   end
 
   create_table "users", force: :cascade do |t|
     t.string "name", default: "", null: false
     t.string "username", default: "", null: false
-    t.string "phone_number", default: "", null: false
-    t.string "password", default: "", null: false
+    t.string "phone_number", limit: 15, null: false
+    t.string "password_digest", null: false
     t.string "otp_secret_key"
-    t.string "session_token", default: "", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["phone_number"], name: "index_users_on_phone_number", unique: true
-    t.index ["session_token"], name: "index_users_on_session_token", unique: true
   end
 
   add_foreign_key "chat_room_messages", "chat_room_participants"
   add_foreign_key "chat_room_messages", "chat_rooms"
   add_foreign_key "chat_room_participants", "chat_rooms"
   add_foreign_key "chat_room_participants", "users"
+  add_foreign_key "chat_rooms", "users"
 end

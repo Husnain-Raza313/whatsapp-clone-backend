@@ -3,13 +3,11 @@ class CreateUsers < ActiveRecord::Migration[6.1]
     create_table :users do |t|
       t.string :name, null: false, default: ''
       t.string :username, null: false, default: ''
-      t.string :phone_number, null: false, default: ''
-      t.string :password, null: false, default: ''
+      t.string :phone_number, null: false, limit: 15
+      t.string :password_digest, null: false
       t.string :otp_secret_key
-      t.string :session_token, null: false, default: ''
       t.timestamps
     end
     add_index :users, :phone_number, unique: true
-    add_index :users, :session_token, unique: true
   end
 end

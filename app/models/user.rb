@@ -3,4 +3,5 @@ class User < ApplicationRecord
   validates :phone_number, uniqueness: true
 
   has_many :chat_room_participants, dependent: :destroy
+  has_many :chat_rooms, dependent: :destroy
 end
