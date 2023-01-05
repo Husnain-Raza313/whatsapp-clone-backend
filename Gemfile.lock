@@ -39,6 +39,9 @@ GEM
       erubi (~> 1.4)
       rails-dom-testing (~> 2.0)
       rails-html-sanitizer (~> 1.1, >= 1.2.0)
+    active_model_otp (2.3.1)
+      activemodel
+      rotp (~> 6.2.0)
     activejob (6.1.7)
       activesupport (= 6.1.7)
       globalid (>= 0.3.6)
@@ -80,6 +83,10 @@ GEM
     crass (1.0.6)
     date (3.3.3)
     erubi (1.12.0)
+    faraday (2.7.2)
+      faraday-net_http (>= 2.0, < 3.1)
+      ruby2_keywords (>= 0.0.4)
+    faraday-net_http (3.0.2)
     ffi (1.15.5)
     globalid (1.0.0)
       activesupport (>= 5.0)
@@ -88,6 +95,7 @@ GEM
     jbuilder (2.11.5)
       actionview (>= 5.0.0)
       activesupport (>= 5.0.0)
+    jwt (2.5.0)
     listen (3.7.1)
       rb-fsevent (~> 0.10, >= 0.10.3)
       rb-inotify (~> 0.9, >= 0.9.10)
@@ -167,6 +175,8 @@ GEM
       ffi (~> 1.0)
     regexp_parser (2.6.1)
     rexml (3.2.5)
+    rotp (6.2.2)
+    ruby2_keywords (0.0.5)
     rubyzip (2.3.2)
     sass-rails (6.0.0)
       sassc-rails (~> 2.1, >= 2.1.1)
@@ -197,6 +207,10 @@ GEM
     turbolinks (5.2.1)
       turbolinks-source (~> 5.2)
     turbolinks-source (5.2.0)
+    twilio-ruby (5.74.0)
+      faraday (>= 0.9, < 3.0)
+      jwt (>= 1.5, <= 2.5)
+      nokogiri (>= 1.6, < 2.0)
     tzinfo (2.0.5)
       concurrent-ruby (~> 1.0)
     uri (0.12.0)
@@ -227,6 +241,7 @@ PLATFORMS
   x86_64-darwin-21
 
 DEPENDENCIES
+  active_model_otp
   bootsnap (>= 1.4.4)
   byebug
   capybara (>= 3.26)
@@ -241,6 +256,7 @@ DEPENDENCIES
   selenium-webdriver (>= 4.0.0.rc1)
   spring
   turbolinks (~> 5)
+  twilio-ruby
   tzinfo-data
   web-console (>= 4.1.0)
   webdrivers
