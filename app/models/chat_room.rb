@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class ChatRoom < ApplicationRecord
   validates :name, presence: true
 

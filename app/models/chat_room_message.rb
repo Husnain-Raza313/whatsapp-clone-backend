@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class ChatRoomMessage < ApplicationRecord
   validates :body, presence: true
 
