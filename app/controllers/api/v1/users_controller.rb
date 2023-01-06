@@ -16,7 +16,7 @@ module Api
 
       def verify_otp
         if params[:otp].present? && @user.authenticate_otp(params[:otp], drift: 7.days.to_i)
-          render json: 'Success', status: 200
+          render json: 'Success', status: :ok
         else
           PhoneNumberVerificationService.new(user: @user).send
           render json: 'Please try again with new otp'

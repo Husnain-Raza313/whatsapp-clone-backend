@@ -5,7 +5,7 @@ Rails.application.routes.draw do
   namespace :api, defaults: { format: :json } do
     namespace :v1 do
       post '/login', to: 'sessions#create'
-      delete '/destroy',to: 'sessions#destroy'
+      delete '/destroy', to: 'sessions#destroy'
       resources :users do
         member do
           get :verify_otp
