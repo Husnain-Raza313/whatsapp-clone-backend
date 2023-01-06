@@ -13,6 +13,7 @@ class ChatRoomMessagesController < ApplicationController
   def create
     @message, @chat_room = ChatSearchService.new(user1: @user1, user2: @user2, message_params: params[:message_params])
     if @message.save
+      ChatRoomChannel.broadcast_to(@message, @chat_room)
       render json: @message
     else
       render json: @message.errors.full_messages, status: 422
