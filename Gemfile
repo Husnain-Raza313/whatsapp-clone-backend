@@ -22,13 +22,23 @@ gem 'jbuilder', '~> 2.7'
 # Use Redis adapter to run Action Cable in production
 # gem 'redis', '~> 4.0'
 # Use Active Model has_secure_password
-# gem 'bcrypt', '~> 3.1.7'
+gem 'active_model_otp'
+gem 'bcrypt', '~> 3.1.7'
+gem 'twilio-ruby'
+
 gem 'net-http'
 # Use Active Storage variant
 # gem 'image_processing', '~> 1.2'
 
 # Reduces boot times through caching; required in config/boot.rb
 gem 'bootsnap', '>= 1.4.4', require: false
+
+group :development, :test do
+  gem 'rubocop'
+  gem 'rubocop-minitest' # or gem 'rubocop-rspec' depending on your test suite
+  gem 'rubocop-performance'
+  gem 'rubocop-rails'
+end
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console

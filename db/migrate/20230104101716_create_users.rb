@@ -6,7 +6,7 @@ class CreateUsers < ActiveRecord::Migration[6.1]
       t.string :name, null: false, default: ''
       t.string :username, null: false, default: ''
       t.string :phone_number, null: false, limit: 15
-      t.string :password_digest, null: false
+      t.string 'password_digest'
       t.string :otp_secret_key
       t.timestamps
     end
