@@ -6,7 +6,7 @@ class PhoneNumberVerificationService < ApplicationService
 
   def initialize(**args)
     @params = args
-    @user = params[:user]
+    @user = @params[:user]
     @client = Twilio::REST::Client.new
   end
 
