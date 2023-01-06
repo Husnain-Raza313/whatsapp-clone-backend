@@ -16,4 +16,12 @@ module Api
         render json: 'You have been logout'
       end
 
+      private
+
+      def new_session_token
+        SecureRandom.urlsafe_base64
+      end
+
     end
+  end
+end
