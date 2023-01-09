@@ -12,6 +12,8 @@ class User < ApplicationRecord
 
   after_initialize :generate_otp_secret_key, if: :new_record?
 
+  scope :find_by_phone_number, ->(phone_number) { find_by(phone_number: phone_number) }
+
   def generate_otp_secret_key
     self.otp_secret_key = User.otp_random_secret
   end

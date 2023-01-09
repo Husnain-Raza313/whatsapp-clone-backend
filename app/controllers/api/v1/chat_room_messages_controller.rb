@@ -37,7 +37,7 @@ module Api
       def set_users
         if params[:user_id].present? && params[:phone_number].present?
           @user1 = User.find_by(id: params[:user_id])
-          @user2 = User.find_by(phone_number: params[:phone_number])
+          @user2 = User.find_by_phone_number(params[:phone_number])
         else
           render json: { message: 'Please Enter a Valid Phone Number' }
         end

@@ -8,7 +8,7 @@ module Api
       def create
         render json: { message: 'Already Logged In' }, status: 422 and return if session[:session_token].present? && get_session_time_left
 
-        user = User.find_by(phone_number: params[:phone_number])
+        user = User.find_by_phone_number(params[:phone_number])
         if user&.authenticate(params[:password])
           session[:session_token] = new_session_token
           render json: { user: user, session_token: session[:session_token], message: 'Success' }
