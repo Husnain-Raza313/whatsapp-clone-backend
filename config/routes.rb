@@ -13,6 +13,7 @@ Rails.application.routes.draw do
       end
 
       resources :chat_room_messages
+      resources :chat_room_participants, only: [:show]
     end
   end
 end

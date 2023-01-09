@@ -3,7 +3,7 @@ module HandleSessionExpiryConcern
 
   def session_expiry
     get_session_time_left
-    return if @session_time_left < 120
+    return if @session_time_left < 1000
     session[:session_token] = nil
     render json: { message: 'Your session has been timeout please Login again' }
   end
