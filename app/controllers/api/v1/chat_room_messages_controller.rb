@@ -5,8 +5,9 @@ module Api
       before_action :check_session_token
       before_action :session_expiry
 
+      include HandleSessionExpiryConcern
+
       def index
-        byebug
         @chat_room_messages = ChatRoomMessage.where(chat_room_id: params[:chat_room_id]).order("created_at ASC") if params[:chat_room_id].present?
         if @chat_room_messages.present?
           render json: @chat_room_messages
@@ -33,10 +34,6 @@ module Api
         params.require(:chat_room_message).permit(:body)
       end
 
-      def check_session_token
-        render json: { message: 'Invalid Session Token' } unless params[:token] && params[:token] == session[:session_token]
-      end
-
       def set_users
         if params[:user_id].present? && params[:phone_number].present?
           @user1 = User.find_by(id: params[:user_id])
@@ -46,18 +43,6 @@ module Api
         end
       end
 
-      def session_expiry
-        get_session_time_left
-        return if @session_time_left < 120
-        session[:session_token] = nil
-        render json: { message: 'Your session has been timeout please Login again' }
-      end
-
-      def get_session_time_left
-        # @session_time_left = ( session[:expires_at] - Time.now).to_i
-        byebug
-        @session_time_left = (Time.now.to_time.to_i - session[:expires_at].to_time.to_i).abs
-      end
     end
   end
 end

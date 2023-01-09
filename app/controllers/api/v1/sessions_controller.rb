@@ -5,7 +5,6 @@ module Api
     class SessionsController < ApplicationController
 
       def create
-        byebug
         render json: { message: 'Already Logged In' }, status: 422 and return  if session[:session_token].present?
 
         user = User.find_by(phone_number: params[:phone_number])
@@ -25,7 +24,7 @@ module Api
       private
 
       def new_session_token
-        session[:expires_at] = Time.now + 100
+        session[:expires_at] = Time.now
         SecureRandom.urlsafe_base64
       end
 
