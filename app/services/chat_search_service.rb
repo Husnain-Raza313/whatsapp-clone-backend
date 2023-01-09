@@ -10,8 +10,12 @@ class ChatSearchService < ApplicationService
   def search
     phone_numbers = [sender.phone_number.last(3), receiver.phone_number.last(3)].sort!
     chat_room = ChatRoom.find_by(name: phone_numbers.join('-'))
-    chat_room_participant1 = ChatRoomParticipant.find_by(user_id: sender.id, chat_room_id: chat_room.id) if chat_room.present?
-    chat_room, chat_room_participant1 = create_chat_and_participants(phone_numbers) if chat_room.blank?
+    if chat_room.present?
+      chat_room_participant1 = ChatRoomParticipant.find_by(user_id: sender.id, chat_room_id: chat_room.id)
+    else
+      chat_room, chat_room_participant1 = create_chat_and_participants(phone_numbers)
+    end
+
     message = chat_room_participant1.chat_room_messages.new(message_params)
     message.chat_room_id = chat_room.id
     [message, chat_room]

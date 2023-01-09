@@ -3,9 +3,10 @@
 module Api
   module V1
     class SessionsController < ApplicationController
+      include HandleSessionExpiryConcern
 
       def create
-        render json: { message: 'Already Logged In' }, status: 422 and return  if session[:session_token].present?
+        render json: { message: 'Already Logged In' }, status: 422 and return if session[:session_token].present? && get_session_time_left
 
         user = User.find_by(phone_number: params[:phone_number])
         if user&.authenticate(params[:password])
