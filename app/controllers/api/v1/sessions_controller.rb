@@ -3,26 +3,32 @@
 module Api
   module V1
     class SessionsController < ApplicationController
+
       def create
+        byebug
+        render json: { message: 'Already Logged In' }, status: 422 and return  if session[:session_token].present?
+
         user = User.find_by(phone_number: params[:phone_number])
         if user&.authenticate(params[:password])
           session[:session_token] = new_session_token
           render json: { user: user, session_token: session[:session_token], message: 'Success' }
         else
-          render json: 'Invalid Credentials'
+          render json: { message: 'Invalid Credentials' }
         end
       end
 
       def destroy
         session[:session_token] = nil
-        render json: 'You have been logout'
+        render json: { message: 'You have been logged out!!!' }
       end
 
       private
 
       def new_session_token
+        session[:expires_at] = Time.now + 100
         SecureRandom.urlsafe_base64
       end
+
     end
   end
 end

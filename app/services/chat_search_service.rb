@@ -1,27 +1,26 @@
 class ChatSearchService < ApplicationService
-  attr_reader :user1, :user2, :message_params
+  attr_reader :sender, :receiver, :message_params
 
   def initialize(**args)
-    @user1 = args[:user1]
-    @user2 = args[:user2]
+    @sender = args[:sender]
+    @receiver = args[:receiver]
     @message_params = args[:message_params]
-    byebug
   end
 
   def search
-    phone_numbers = [user1.phone_number, user2.phone_number].sort!
+    phone_numbers = [sender.phone_number.last(3), receiver.phone_number.last(3)].sort!
     chat_room = ChatRoom.find_by(name: phone_numbers.join('-'))
-    chat_room_particpant1 = ChatRoomParticipant.create(user_id: user1.id, chat_room_id: chat_room.id) if chat_room.present?
-    chat_room, chat_room_particpant1 = create_chat_and_participants unless chat_room.present?
+    chat_room_particpant1 = ChatRoomParticipant.find_by(user_id: sender.id, chat_room_id: chat_room.id) if chat_room.present?
+    chat_room, chat_room_particpant1 = create_chat_and_participants(phone_numbers) unless chat_room.present?
     message = chat_room_particpant1.chat_room_messages.new(message_params)
     message.chat_room_id = chat_room.id
     [message, chat_room]
   end
 
-  def create_chat_and_participants
-    chat_room = ChatRoom.create(name:  phone_numbers.join('-'))
-    chat_room_particpant1 = ChatRoomParticipant.create(user_id: user1.id, chat_room_id: chat_room.id)
-    chat_room_particpant2 = ChatRoomParticipant.create(user_id: user2.id, chat_room_id: chat_room.id)
+  def create_chat_and_participants(phone_numbers)
+    chat_room = ChatRoom.create(name:  phone_numbers.join('-'), user_id: sender.id)
+    chat_room_particpant1 = ChatRoomParticipant.create(user_id: sender.id, chat_room_id: chat_room.id)
+    chat_room_particpant2 = ChatRoomParticipant.create(user_id: receiver.id, chat_room_id: chat_room.id)
 
     [chat_room, chat_room_particpant1]
   end
