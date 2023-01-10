@@ -11,6 +11,16 @@ module Api
         receivers = user.chat_room_participants.receiver_names
         render json: receivers
       end
+
+      def destroy
+        chatroom = ChatRoom.find_by(id: params[:id])
+        if chatroom.destroy
+          render json: { chatroom: chatroom, message: 'Success' }
+        else
+          render json: { message: chatroom.errors.full_messages }
+        end
+
+      end
     end
   end
 end
