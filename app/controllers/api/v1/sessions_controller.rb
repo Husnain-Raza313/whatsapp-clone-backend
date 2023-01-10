@@ -19,13 +19,14 @@ module Api
 
       def destroy
         session[:session_token] = nil
+        session[:login_time] = nil
         render json: { message: 'You have been logged out!!!' }
       end
 
       private
 
       def new_session_token
-        session[:expires_at] = Time.now
+        session[:login_time] = Time.now
         SecureRandom.urlsafe_base64
       end
 

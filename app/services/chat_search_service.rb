@@ -2,9 +2,10 @@ class ChatSearchService < ApplicationService
   attr_reader :sender, :receiver, :message_params
 
   def initialize(**args)
-    @sender = args[:sender]
-    @receiver = args[:receiver]
-    @message_params = args[:message_params]
+    @params = args
+    @sender = @params[:sender]
+    @receiver = @params[:receiver]
+    @message_params = @params[:message_params]
   end
 
   def search
