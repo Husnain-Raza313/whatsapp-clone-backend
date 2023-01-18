@@ -7,6 +7,7 @@ class User < ApplicationRecord
 
   has_secure_password
   has_one_time_password column_name: :otp_secret_key, length: 6
+  has_one_attached :profile_pic
   has_many :chat_room_participants, dependent: :destroy
   has_many :chat_rooms, dependent: :destroy
 

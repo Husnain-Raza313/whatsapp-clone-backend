@@ -6,6 +6,7 @@ module Api
       before_action :set_user, only: [:verify_otp]
       def create
         @user = User.new(user_params)
+        set_profile_pic
         result = PhoneNumberVerificationService.new(user: @user).send
         if result && @user.save
           render json: @user, status: :ok
@@ -31,6 +32,13 @@ module Api
 
       def set_user
         @user = User.find_by(id: params[:id])
+      end
+
+      def set_profile_pic
+        if params[:file]
+          @user.profile_pic.attach(params[:file])
+          @user.image = url_for(@user.profile_pic)
+        end
       end
     end
   end
