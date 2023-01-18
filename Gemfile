@@ -30,6 +30,8 @@ gem 'net-http'
 # Use Active Storage variant
 # gem 'image_processing', '~> 1.2'
 
+gem 'rack-cors', require: 'rack/cors'
+
 # Reduces boot times through caching; required in config/boot.rb
 gem 'bootsnap', '>= 1.4.4', require: false
 
