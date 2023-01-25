@@ -2,8 +2,9 @@ module Api
   module V1
     class ChatRoomMessagesController < ApplicationController
       before_action :set_users, only: [:create]
-      before_action :check_session_token
-      before_action :session_expiry
+      # before_action :check_session_token
+      # before_action :session_expiry
+      before_action :authorize
 
       include HandleSessionExpiryConcern
 

@@ -1,8 +1,9 @@
 module Api
   module V1
     class ChatRoomParticipantsController < ApplicationController
-      before_action :check_session_token
-      before_action :session_expiry
+      # before_action :check_session_token
+      # before_action :session_expiry
+      before_action :authorize
 
       include HandleSessionExpiryConcern
 

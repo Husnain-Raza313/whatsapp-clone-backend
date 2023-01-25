@@ -25,6 +25,7 @@ gem 'jbuilder', '~> 2.7'
 gem 'active_model_otp'
 gem 'bcrypt', '~> 3.1.7'
 gem 'twilio-ruby'
+gem 'jwt'
 
 gem 'net-http'
 # Use Active Storage variant

@@ -279,6 +279,7 @@ DEPENDENCIES
   byebug
   capybara (>= 3.26)
   jbuilder (~> 2.7)
+  jwt
   listen (~> 3.3)
   net-http
   pg (~> 1.1)
