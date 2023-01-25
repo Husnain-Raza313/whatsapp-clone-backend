@@ -1,11 +1,9 @@
+# frozen_string_literal: true
+
 module Api
   module V1
     class ChatRoomParticipantsController < ApplicationController
-      # before_action :check_session_token
-      # before_action :session_expiry
       before_action :authorize
-
-      include HandleSessionExpiryConcern
 
       def show
         user = User.find_by(id: params[:id])
@@ -20,7 +18,6 @@ module Api
         else
           render json: { message: chatroom.errors.full_messages }
         end
-
       end
     end
   end

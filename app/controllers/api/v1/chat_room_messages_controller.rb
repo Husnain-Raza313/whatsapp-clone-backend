@@ -1,15 +1,15 @@
+# frozen_string_literal: true
+
 module Api
   module V1
     class ChatRoomMessagesController < ApplicationController
       before_action :set_users, only: [:create]
-      # before_action :check_session_token
-      # before_action :session_expiry
       before_action :authorize
 
-      include HandleSessionExpiryConcern
-
       def index
-        @chat_room_messages = ChatRoomMessage.where(chat_room_id: params[:chat_room_id]).order("created_at ASC") if params[:chat_room_id].present?
+        if params[:chat_room_id].present?
+          @chat_room_messages = ChatRoomMessage.where(chat_room_id: params[:chat_room_id]).order('created_at ASC')
+        end
         if @chat_room_messages.present?
           render json: @chat_room_messages
         else
@@ -18,14 +18,15 @@ module Api
       end
 
       def create
-        render json: { message: 'Invalid User' }, status: 422 and return  unless @user1 && @user2
+        render json: { message: 'Invalid User' }, status: :unprocessable_entity and return unless @user1 && @user2
 
-        @message, @chat_room = ChatSearchService.new(sender: @user1, receiver: @user2, message_params: message_params).search
+        @message, @chat_room = ChatSearchService.new(sender: @user1, receiver: @user2,
+                                                     message_params: message_params).search
         if @message.save
           ChatRoomChannel.broadcast_to(@message, @chat_room)
           render json: @message
         else
-          render json: @message.errors.full_messages, status: 422
+          render json: @message.errors.full_messages, status: :unprocessable_entity
         end
       end
 
@@ -38,12 +39,11 @@ module Api
       def set_users
         if params[:user_id].present? && params[:phone_number].present?
           @user1 = User.find_by(id: params[:user_id])
-          @user2 = User.find_by_phone_number(params[:phone_number])
+          @user2 = User.find_by(phone_number: params[:phone_number])
         else
           render json: { message: 'Please Enter a Valid Phone Number' }
         end
       end
-
     end
   end
 end

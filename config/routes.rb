@@ -5,7 +5,6 @@ Rails.application.routes.draw do
   namespace :api, defaults: { format: :json } do
     namespace :v1 do
       post '/login', to: 'sessions#create'
-      delete '/destroy', to: 'sessions#destroy'
       resources :users do
         member do
           get :verify_otp
@@ -13,7 +12,7 @@ Rails.application.routes.draw do
       end
 
       resources :chat_room_messages
-      resources :chat_room_participants, only: [:show, :destroy]
+      resources :chat_room_participants, only: %i[show destroy]
     end
   end
 end

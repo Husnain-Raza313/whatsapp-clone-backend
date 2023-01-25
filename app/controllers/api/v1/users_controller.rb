@@ -10,7 +10,7 @@ module Api
         # result = PhoneNumberVerificationService.new(user: @user).send
         # if result && @user.save
         if @user.save
-          token = encode_token({ user_id: @user.id})
+          token = encode_token({ user_id: @user.id })
           render json: { user: @user, token: token }, status: :ok
         else
           render json: @user.errors.full_messages, status: :unprocessable_entity
@@ -37,10 +37,10 @@ module Api
       end
 
       def set_profile_pic
-        if params[:file]
-          @user.profile_pic.attach(params[:file])
-          @user.image = url_for(@user.profile_pic)
-        end
+        return unless params[:file]
+
+        @user.profile_pic.attach(params[:file])
+        @user.image = url_for(@user.profile_pic)
       end
     end
   end
