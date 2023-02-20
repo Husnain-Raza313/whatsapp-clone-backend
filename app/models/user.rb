@@ -15,6 +15,12 @@ class User < ApplicationRecord
 
   scope :find_by_phone_number, ->(phone_number) { find_by(phone_number: phone_number) }
 
+  searchkick word_start: [:name]
+
+  def search_data
+    {name: name}
+  end
+
   def generate_otp_secret_key
     self.otp_secret_key = User.otp_random_secret
   end

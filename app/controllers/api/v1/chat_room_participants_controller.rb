@@ -6,8 +6,8 @@ module Api
       before_action :authorize
 
       def show
-        user = User.find_by(id: params[:id])
-        receivers = user.chat_room_participants.receiver_names
+        # user = User.find_by(id: params[:id])
+        receivers = @user.chat_room_participants
         render json: receivers
       end
 

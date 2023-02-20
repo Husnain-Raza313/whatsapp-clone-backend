@@ -26,11 +26,14 @@ gem 'active_model_otp'
 gem 'bcrypt', '~> 3.1.7'
 gem 'jwt'
 gem 'twilio-ruby'
+gem 'searchkick'
+gem  'elasticsearch', "< 7.14"
 
 gem 'net-http'
 # Use Active Storage variant
 # gem 'image_processing', '~> 1.2'
 
+gem 'active_model_serializers'
 gem 'rack-cors', require: 'rack/cors'
 
 # Reduces boot times through caching; required in config/boot.rb

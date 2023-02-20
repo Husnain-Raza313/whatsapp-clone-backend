@@ -3,7 +3,7 @@
 module Api
   module V1
     class ApplicationController < ActionController::API
-      def encode_token(payload, exp = 5.minutes.from_now)
+      def encode_token(payload, exp = 25.minutes.from_now)
         payload[:exp] = exp.to_i
         JWT.encode(payload, 'secret')
       end
@@ -30,6 +30,11 @@ module Api
 
       def authorize
         render json: { message: 'You Have To Log in first' }, status: :unauthorized unless authorized_user
+      end
+
+      def expiry_time
+        time = Time.zone.now + 25.minutes.to_i
+        time.strftime('%m-%d-%Y %H:%M')
       end
     end
   end

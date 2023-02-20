@@ -7,11 +7,16 @@ module Api
         @user = User.find_by(phone_number: params[:phone_number])
         if @user&.authenticate(params[:password])
           token = encode_token({ user_id: @user.id })
-          time = Time.zone.now + 5.minutes.to_i
-          render json: { user: @user, exp: time.strftime('%m-%d-%Y %H:%M'), token: token }, status: :ok
+          render json: { user: @user, exp: expiry_time, token: token, profile_pic: profile_pic }, status: :ok
         else
           render json: { message: 'Invalid Credentials' }
         end
+      end
+
+      private
+
+      def profile_pic
+        rails_blob_path(@user.profile_pic, only_path: true) if @user.profile_pic.attached?
       end
     end
   end
