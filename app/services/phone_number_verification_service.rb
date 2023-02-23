@@ -2,7 +2,7 @@
 
 class PhoneNumberVerificationService < ApplicationService
   include ActiveModel::Validations
-  attr_reader :user, :client
+  attr_reader :user, :client, :params
 
   def initialize(**args)
     @params = args
@@ -19,6 +19,7 @@ class PhoneNumberVerificationService < ApplicationService
     true
   rescue Twilio::REST::RestError => e
     params[:user].errors.add(:base, 'please Enter a valid phone number')
+    false
   end
 
   private

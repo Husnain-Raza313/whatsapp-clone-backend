@@ -36,6 +36,11 @@ module Api
         time = Time.zone.now + 25.minutes.to_i
         time.strftime('%m-%d-%Y %H:%M')
       end
+
+      def get_phone_number
+        phone_no = params[:body].present? ? params[:phone_number] : "+#{params[:phone_number]}"
+        phone_no.delete(" ")
+      end
     end
   end
 end

@@ -4,7 +4,7 @@ module Api
   module V1
     class ChatRoomMessagesController < ApplicationController
       before_action :set_users, only: [:create, :index]
-      # before_action :authorize
+      before_action :authorize
 
       def index
         phone_numbers = [@user1.phone_number.last(3), @user2.phone_number.last(3)].sort!
@@ -31,8 +31,8 @@ module Api
                                                      message_params: message_params).search
         if @message.save
           # ChatRoomChannel.broadcast_to( @chat_room.id, @message.body)
-          ActionCable.server.broadcast "chat_room_#{@chat_room.id}", @message
-          render json: @message
+          ActionCable.server.broadcast "chat_room_#{@chat_room}", @message
+          render json: @message.body
         else
           render json: @message.errors.full_messages, status: :unprocessable_entity
         end
@@ -49,8 +49,7 @@ module Api
         if params[:phone_number].present?
           # @user1 = User.find_by(id: params[:user_id])
           @user1 = @user
-          phone_no = params[:body].present? ? params[:phone_number] : "+#{params[:phone_number]}"
-          @user2 = User.find_by(phone_number: phone_no.delete(" "))
+          @user2 = User.find_by(phone_number: get_phone_number)
         else
           render json: { message: 'Please Enter a Valid Phone Number' }
         end
