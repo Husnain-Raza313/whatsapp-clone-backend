@@ -18,7 +18,7 @@ class User < ApplicationRecord
   searchkick word_start: [:name]
 
   def search_data
-    {name: name}
+    { name: name }
   end
 
   def generate_otp_secret_key

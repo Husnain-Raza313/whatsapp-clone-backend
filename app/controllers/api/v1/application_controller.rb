@@ -39,7 +39,7 @@ module Api
 
       def get_phone_number
         phone_no = params[:body].present? ? params[:phone_number] : "+#{params[:phone_number]}"
-        phone_no.delete(" ")
+        phone_no.delete(' ')
       end
     end
   end
