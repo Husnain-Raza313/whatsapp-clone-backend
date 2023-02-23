@@ -12,7 +12,7 @@ class ChatSearchService < ApplicationService
 
   def search
     phone_numbers = [sender.phone_number.last(3), receiver.phone_number.last(3)].sort!
-    chat_room = ChatRoom.find_by_name(phone_numbers.join('-'))
+    chat_room = ChatRoom.where(name: phone_numbers.join('-')).pluck(:id)[0]
     if chat_room.present?
       chat_room_participant1 = ChatRoomParticipant.find_by_user_and_chat_ids(sender.id, chat_room)
     else

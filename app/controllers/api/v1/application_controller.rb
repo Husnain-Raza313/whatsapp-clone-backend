@@ -3,7 +3,7 @@
 module Api
   module V1
     class ApplicationController < ActionController::API
-      def encode_token(payload, exp = 25.minutes.from_now)
+      def encode_token(payload, exp = 30.minutes.from_now)
         payload[:exp] = exp.to_i
         JWT.encode(payload, 'secret')
       end
@@ -33,7 +33,7 @@ module Api
       end
 
       def expiry_time
-        time = Time.zone.now + 25.minutes.to_i
+        time = Time.zone.now + 30.minutes.to_i
         time.strftime('%m-%d-%Y %H:%M')
       end
 
