@@ -8,11 +8,11 @@ module Api
 
       def index
         phone_numbers = [@user1.phone_number.last(3), @user2.phone_number.last(3)].sort!
-        chat_room_id = ChatRoom.find_by_name(phone_numbers)
+        chat_room_id = ChatRoom.find_by_phone(phone_numbers)
         if chat_room_id.present?
-          sender_chat_id = ChatRoomParticipant.find_by_user_and_chat_ids(@user1.id, chat_room_id)
+          sender = ChatRoomParticipant.find_by_user_and_chat_ids(@user1.id, chat_room_id)
           @chat_room_messages = ChatRoomMessage.find_messages(chat_room_id)
-          render json: {messages: @chat_room_messages, sender_chat_id: sender_chat_id }
+          render json: {messages: @chat_room_messages, sender: sender }
         else
           render json: { message: 'You have no conversation with this user' }
         end
