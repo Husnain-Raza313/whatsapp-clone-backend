@@ -18,7 +18,8 @@ module Api
       def create
         @user = User.new(user_params)
         if @user.valid?
-          send_otp
+          # send_otp
+          save_user
         else
           render json: { message: @user.errors.full_messages }, status: :unprocessable_entity
         end
@@ -38,8 +39,8 @@ module Api
       private
 
       def user_params
-        params.permit(:name, :phone_number, :username, :password, :password_confirmation, :password_digest,
-                      :profile_pic)
+        params.permit(:name, :phone_number, :username, :password, :password_confirmation, :password_digest, :profile_pic
+                      ).select {|x,v| v.present?}
       end
 
       def save_user
@@ -52,7 +53,7 @@ module Api
       end
 
       def send_otp
-        result = PhoneNumberVerificationService.new(user: @user).send
+        # result = PhoneNumberVerificationService.new(user: @user).send
         if result
           render json: { user: @user, otp_secret_key: @user.otp_secret_key }, status: :ok
         else

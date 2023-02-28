@@ -28,6 +28,7 @@ gem 'elasticsearch', '< 7.14'
 gem 'jwt'
 gem 'searchkick'
 gem 'twilio-ruby'
+gem 'activestorage-validator'
 
 gem 'net-http'
 # Use Active Storage variant

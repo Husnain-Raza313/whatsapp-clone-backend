@@ -10,12 +10,13 @@ module Api
         # chat_room_id = ChatRoom.find_by_name(params[:chat_room_name])
         chat_room_id = ChatRoom.where(name: params[:chat_room_name]).pluck(:id)[0]
         if chat_room_id.present?
-          sender = ChatRoomParticipant.find_by_user_and_chat_ids(@user_id, chat_room_id)
+          sender = get_sender(@user_id, chat_room_id)
           @chat_room_messages = ChatRoomMessage.find_messages(chat_room_id)
           render json: {messages: @chat_room_messages, sender: sender }
         else
           render json: { message: 'You have no conversation with this user' }
         end
+
       end
 
       def show
@@ -25,8 +26,10 @@ module Api
         if chat_room_id.blank?
           render json: { message: message }, status: :unprocessable_entity
         else
-          render json: {chat_room_id: chat_room_id }, status: :ok
+          sender = get_sender(@user1.id, chat_room_id)
+          render json: {chat_room_id: chat_room_id, sender: sender }, status: :ok
         end
+
       end
 
       def create
@@ -48,9 +51,8 @@ module Api
         params.permit(:body)
       end
 
-      def chat_room_name
-        phone_numbers = [@user1.phone_number.last(3), @user2.phone_number.last(3)].sort!
-        phone_numbers = phone_numbers.join('-')
+      def get_sender(user_id, chat_room_id)
+        ChatRoomParticipant.find_by_user_and_chat_ids(user_id, chat_room_id)
       end
 
       def set_users

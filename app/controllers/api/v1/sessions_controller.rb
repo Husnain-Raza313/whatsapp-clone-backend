@@ -7,9 +7,9 @@ module Api
         @user = User.find_by(phone_number: params[:phone_number])
         if @user&.authenticate(params[:password])
           token = encode_token({ user_id: @user.id })
-          render json: { user: @user, exp: expiry_time, token: token, profile_pic: profile_pic }, status: :ok
+          render json: { user: @user , exp: expiry_time, token: token, profile_pic: profile_pic }, status: :ok
         else
-          render json: { message: 'Invalid Credentials' }
+          render json: { message: 'Invalid Credentials' }, status: :unprocessable_entity
         end
       end
 

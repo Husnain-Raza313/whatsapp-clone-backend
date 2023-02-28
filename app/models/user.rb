@@ -4,6 +4,7 @@ class User < ApplicationRecord
   validates :username, :name, :phone_number, :password, presence: true
   validates :phone_number, uniqueness: true
   validates :phone_number, numericality: true, length: { minimum: 11, maximum: 15 }
+  validates :profile_pic, blob: { content_type: ['image/png', 'image/jpg', 'image/jpeg'] }
 
   has_secure_password
   has_one_time_password column_name: :otp_secret_key, length: 6
@@ -12,6 +13,8 @@ class User < ApplicationRecord
   has_many :chat_rooms, dependent: :destroy
 
   after_initialize :generate_otp_secret_key, if: :new_record?
+
+
 
   scope :find_by_phone_number, ->(phone_number) { find_by(phone_number: phone_number) }
 
