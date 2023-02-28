@@ -8,9 +8,9 @@ module Api
         users = if params[:query].present?
                   User.search(params[:query],
                               { fields: ['name'],
-                                match: :word_start })
+                                match: :word_start }).where.not(id: @user_id)
                 else
-                  User.where.not(id: @user.id)
+                  User.where.not(id: @user_id)
                 end
         render json: users, status: :ok
       end
@@ -40,10 +40,6 @@ module Api
       def user_params
         params.permit(:name, :phone_number, :username, :password, :password_confirmation, :password_digest,
                       :profile_pic)
-      end
-
-      def set_user
-        @user = User.find_by(id: params[:id])
       end
 
       def save_user

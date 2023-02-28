@@ -24,8 +24,7 @@ module Api
         decoded_token = decode_token
         return unless decoded_token
 
-        user_id = decoded_token[0]['user_id']
-        @user = User.find_by(id: user_id)
+        @user_id = decoded_token[0]['user_id']
       end
 
       def authorize

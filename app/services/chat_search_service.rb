@@ -1,36 +1,24 @@
 # frozen_string_literal: true
 
 class ChatSearchService < ApplicationService
-  attr_reader :sender, :receiver, :message_params
+  attr_reader :sender_id, :message_params, :chat_room_name
 
   def initialize(**args)
     @params = args
-    @sender = @params[:sender]
-    @receiver = @params[:receiver]
+    @sender_id = @params[:sender_id]
+    # @receiver_id = @params[:receiver_id]
     @message_params = @params[:message_params]
+    @chat_room_name = @params[:chat_room_name]
   end
 
   def search
-    phone_numbers = [sender.phone_number.last(3), receiver.phone_number.last(3)].sort!
-    chat_room = ChatRoom.find_by_phone(phone_numbers.join('-'))
+    # phone_numbers = [sender.phone_number.last(3), receiver.phone_number.last(3)].sort!
+    chat_room = ChatRoom.find_by_name(chat_room_name)
     if chat_room.present?
-      chat_room_participant1 = ChatRoomParticipant.find_by_user_and_chat_ids(sender.id, chat_room)
-    else
-      chat_room, chat_room_participant1 = create_chat_and_participants(phone_numbers)
+      chat_room_participant1 = ChatRoomParticipant.find_by_user_and_chat_ids(sender_id, chat_room)
+      message = chat_room_participant1.chat_room_messages.new(message_params)
+      message.chat_room_id = chat_room
+      [message, chat_room]
     end
-
-    message = chat_room_participant1.chat_room_messages.new(message_params)
-    message.chat_room_id = chat_room
-    [message, chat_room]
-  end
-
-  def create_chat_and_participants(phone_numbers)
-    chat_room = ChatRoom.create(name: phone_numbers.join('-'), user_id: sender.id)
-    chat_room_participant1 = ChatRoomParticipant.create(user_id: sender.id, chat_room_id: chat_room.id,
-                                                        receiver_name: receiver.name)
-    chat_room_participant2 = ChatRoomParticipant.create(user_id: receiver.id, chat_room_id: chat_room.id,
-                                                        receiver_name: sender.name)
-
-    [chat_room.id, chat_room_participant1]
   end
 end
