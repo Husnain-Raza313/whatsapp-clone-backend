@@ -3,6 +3,7 @@
 class User < ApplicationRecord
   validates :username, :name, :phone_number, :password, presence: true
   validates :phone_number, uniqueness: true
+  validates :username, uniqueness: true
   validates :phone_number, numericality: true, length: { minimum: 11, maximum: 15 }
   validates :profile_pic, blob: { content_type: ['image/png', 'image/jpg', 'image/jpeg'] }
 
