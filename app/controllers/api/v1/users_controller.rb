@@ -18,8 +18,7 @@ module Api
       def create
         @user = User.new(user_params)
         if @user.valid?
-          # send_otp
-          save_user
+          send_otp
         else
           render json: { message: @user.errors.full_messages }, status: :unprocessable_entity
         end
@@ -32,7 +31,7 @@ module Api
           save_user
         else
           # PhoneNumberVerificationService.new(user: @user).send
-          render json: { message: 'Please Try Again With Correct OTP' }
+          render json: { message: 'Please Try Again With Correct OTP' }, status: :unprocessable_entity
         end
       end
 
@@ -53,7 +52,7 @@ module Api
       end
 
       def send_otp
-        # result = PhoneNumberVerificationService.new(user: @user).send
+        result = PhoneNumberVerificationService.new(user: @user).send
         if result
           render json: { user: @user, otp_secret_key: @user.otp_secret_key }, status: :ok
         else
