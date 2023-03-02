@@ -17,6 +17,7 @@ module Api
 
       def create
         @user = User.new(user_params)
+        @user.otp_secret_key = User.otp_random_secret
         if @user.valid?
           send_otp
         else

@@ -12,10 +12,6 @@ class User < ApplicationRecord
   has_many :chat_room_participants, dependent: :destroy
   has_many :chat_rooms, dependent: :destroy
 
-  after_initialize :generate_otp_secret_key, if: :new_record?
-
-
-
   scope :find_by_phone_number, ->(phone_number) { find_by(phone_number: phone_number) }
 
   searchkick word_start: [:name]
@@ -24,7 +20,4 @@ class User < ApplicationRecord
     { name: name }
   end
 
-  def generate_otp_secret_key
-    self.otp_secret_key = User.otp_random_secret
-  end
 end

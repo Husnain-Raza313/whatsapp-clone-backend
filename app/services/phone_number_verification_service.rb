@@ -14,7 +14,7 @@ class PhoneNumberVerificationService < ApplicationService
     client.messages.create(
       from: twilio_phone_number.to_s,
       to: user[:phone_number].to_s,
-      body: "Please Enter This code under 30 seconds: #{user.otp_code}"
+      body: "Please Enter This code: #{user.otp_code}"
     )
     true
   rescue Twilio::REST::RestError => e
